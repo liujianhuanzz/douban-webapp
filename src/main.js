@@ -12,6 +12,16 @@ import router from './router'
 
 Vue.use(VueResource)
 
+router.beforeEach((to, from, next)=>{
+	document.body.scrollTop = 0;
+	console.log(to);
+	if(to.name == 'movie') document.title = '豆瓣电影';
+	if(to.name == 'music') document.title = '豆瓣音乐';
+	if(to.name == 'movie-detail') document.title = '电影详情';
+	if(to.name == 'music-detail') document.title = '音乐详情'
+	next();
+})
+
 new Vue({
 	router,
 	store

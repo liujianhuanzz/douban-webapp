@@ -5,6 +5,11 @@
 + 支持音乐人、作品搜索，点击列表，显示相关专辑的详细信息
 + vue/vuex/vuex-router
 
+##update
+
++ 2017-01-04 增加导航钩子，修改页面title
+
+
 ## Build Setup
 
 ``` bash

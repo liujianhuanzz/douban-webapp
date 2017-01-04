@@ -38,6 +38,7 @@ export default{
 		let self = this;
         if(!self.movie_list.length){
 			self.$http.jsonp('http://api.douban.com/v2/movie/in_theaters').then((response) => {
+				console.log(response);
 	        	if(response.ok){
 	        		self.total = response.data.total;
 					self.$store.dispatch('setMovieList', response.data.subjects);
