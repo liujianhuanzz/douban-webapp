@@ -26,8 +26,8 @@ export default{
 .loading{
     position: fixed;
     left: 0;
-    top: .52rem;
-    bottom: .52rem;
+    top: .51rem;
+    bottom: .51rem;
     width: 100%;
     display: none;
     background-color: #fff;
@@ -108,14 +108,12 @@ export default{
     }
     .line-spin-fade-loader > div {
         background-color: #00b600;
-        width: 4px;
-        height: 35px;
         border-radius: 2px;
         margin: 2px;
         -webkit-animation-fill-mode: both;
                 animation-fill-mode: both;
         position: absolute;
-        width: 5px;
+        width: 4px;
         height: 15px;
     }
 }
