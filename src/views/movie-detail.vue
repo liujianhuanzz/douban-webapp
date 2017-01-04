@@ -20,8 +20,11 @@
 					</template>
 				</div>
 				<div class='movie-type'>
-					<span v-for='(item, index) in movie_type' v-if='index < (movie_type.length - 1)'>{{movie_type[index]}}/</span>
-					<span v-for='(item, index) in movie_type' v-else>{{movie_type[index]}}</span>
+					<template v-for='(item, index) in movie_type'>
+						<span v-if='index < (movie_type.length - 1)'>{{movie_type[index]}}/</span>
+						<span v-else>{{movie_type[index]}}</span>
+					</template>
+
 				</div>
 				<div class='movie-summary'>
 					<p style='color: #00b600;'>故事简介：</p>{{movie_summary}}
