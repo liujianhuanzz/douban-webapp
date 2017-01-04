@@ -4,7 +4,7 @@
 + 支持显示最近上映的电影，点击列表显示电影的详细信息
 + 支持音乐人、作品搜索，点击列表，显示相关专辑的详细信息
 + vue/vuex/vuex-router
-+
+
 ## Build Setup
 
 ``` bash
@@ -16,4 +16,8 @@ npm run dev
 
 # build for production with minification
 npm run build
+
 ```
+##
+
+ [1]: ./static/img/hello.png "1.png"
