@@ -41,7 +41,7 @@ export default{
 	.list-header{
 		width: 100%;
 		height: .3rem;
-		font-size: .16rem;
+		font-size: .14rem;
 		line-height: .3rem;
 		box-sizing: border-box;
 		padding-left: .06rem;
@@ -73,7 +73,7 @@ export default{
 			.movie-info{
 				flex: 1;
 				h2{
-					font-size: .16rem;
+					font-size: .14rem;
 					line-height: .18rem;
 					color: #666;
 				}

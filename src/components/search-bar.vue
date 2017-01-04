@@ -25,13 +25,13 @@ export default{
     methods:{
         search(){
             let self = this;
-            self.$emit('loading_show', true);
-            self.$http.jsonp(self.search_url + self.msg).then((response) => {
+            self.msg? self.$emit('loading_show', true):'';
+            self.msg? self.$http.jsonp(self.search_url + self.msg).then((response) => {
             	if(response.ok){
                     self.$emit('search_fun', response.data);
                     self.$emit('loading_show', false);
             	}
-           	})
+           	}):null;
         }
     }
 }
@@ -60,11 +60,14 @@ export default{
     }
     button{
         flex: 0 0 .6rem;
-        background-color: orange;
         margin-left: .1rem;
         color: #fff;
         border: 1px solid #f2f2f2;
         background-color: #00b600;
+        outline: none;
+        &:active{
+            border: 1px solid #f2f2f2;
+        }
     }
 }
 </style>

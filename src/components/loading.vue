@@ -26,8 +26,8 @@ export default{
 .loading{
     position: fixed;
     left: 0;
-    top: .5rem;
-    bottom: .5rem;
+    top: .52rem;
+    bottom: .52rem;
     width: 100%;
     display: none;
     background-color: #fff;
