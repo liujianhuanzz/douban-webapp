@@ -9,9 +9,10 @@ export const setMovieInfo = async ({commit}, {id, context}) => {
 }
 
 export const setMovieList = async ({commit}, {context}) => {
-  let resArr = await window.localStorage.getItem('movieList').split('??');
+  let cookieRes = await window.localStorage.getItem('movieList');
+  let resArr = cookieRes && cookieRes.split('??');
   let res;
-  if(!resArr[1] || (resArr[1] && Date.now() - parseInt(resArr[1]) > 30* 60 * 1000)){
+  if(!resArr || (resArr[1] && Date.now() - parseInt(resArr[1]) > 30* 60 * 1000)){
     res = await context.$http.jsonp('http://api.douban.com/v2/movie/in_theaters');
     if(res.ok){
       commit(types.SET_MOVIE_LIST, {movieList: res.body})
