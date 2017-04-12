@@ -2,7 +2,7 @@
 	<div class='image'>
 		<page-header :title='title'></page-header>
 		<section class='image-container'>
-			<search-bar @search_fun='search_music' @loading_show='loading_show' :search_url='search_url'></search-bar>
+			<search-bar></search-bar>
 			<music-list :music_list='music_list'></music-list>
 		</section>
 		<page-footer :title='title'></page-footer>
@@ -15,14 +15,12 @@ import PageHeader from '../components/header.vue'
 import PageFooter from '../components/footer.vue'
 import Loader from '../components/loading.vue'
 import MusicList from '../components/music-list.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default{
 	data(){
 		return {
-			'title': '音乐',
-			search_url: "https://api.douban.com/v2/music/search?q=",
-			loader_show: false
+			'title': '音乐'
 		}
 	},
 	components:{
@@ -35,16 +33,18 @@ export default{
 	methods:{
 		search_music(res){
 			this.$store.dispatch('setMusicList', res.musics);
-		},
-		loading_show(flag){
-			this.loader_show = flag? true: false;
 		}
 	},
 	computed:{
+		...mapState({
+			'loader_show': 'loader_show'
+		}),
 		...mapGetters({
 			'music_list':'getMusicList'
-
 		})
+	},
+	created(){
+		this.$store.dispatch('hideLoading')
 	}
 }
 </script>

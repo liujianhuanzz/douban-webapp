@@ -11,27 +11,10 @@ export default{
             msg: ''
         }
     },
-    props:{
-        search_fun:{
-            type: Function
-        },
-        loading_show:{
-            type: Function
-        },
-        search_url:{
-            type: String
-        }
-    },
     methods:{
         search(){
-            let self = this;
-            self.msg? self.$emit('loading_show', true):'';
-            self.msg? self.$http.jsonp(self.search_url + self.msg).then((response) => {
-            	if(response.ok){
-                    self.$emit('search_fun', response.data);
-                    self.$emit('loading_show', false);
-            	}
-           	}):null;
+            this.$store.dispatch("showLoading");
+            this.$store.dispatch("setMusicList", {msg: this.msg, context: this});
         }
     }
 }

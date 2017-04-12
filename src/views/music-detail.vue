@@ -1,36 +1,36 @@
 <template>
 	<div class="detail">
-		<page-header :title='title' :isShow='back_show'></page-header>
+		<page-header :title='musicInfo.title' :isShow='back_show'></page-header>
 		<article class="music-info">
 			<div class='music-poster'>
-				<img :src='music_poster' alt>
+				<img :src='musicInfo.music_poster' alt>
 			</div>
 			<section class='music-detail'>
-				<div class='music-title'>{{title}}</div>
+				<div class='music-title'>{{musicInfo.title}}</div>
 				<div class='music-star'>
-					<span style='color: orange'>{{"★★★★★☆☆☆☆☆".slice(5 - parseInt(music_star/2), 10 - parseInt(music_star/2))}} {{music_star}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: orange'>{{music_count}}</span>人已评价
+					<span style='color: orange'>{{"★★★★★☆☆☆☆☆".slice(5 - parseInt(musicInfo.music_star/2), 10 - parseInt(musicInfo.music_star/2))}} {{musicInfo.music_star}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: orange'>{{musicInfo.music_count}}</span>人已评价
 				</div>
 				<div class='music-singer'>
-					<template v-for='(list, index) in music_singer'>
-						<span v-if='index < (music_singer.length - 1)'>{{music_singer[index]}}/</span>
-						<span v-else>{{music_singer[index]}}</span>
+					<template v-for='(list, index) in musicInfo.music_singer'>
+						<span v-if='index < (musicInfo.music_singer.length - 1)'>{{musicInfo.music_singer[index]}}/</span>
+						<span v-else>{{musicInfo.music_singer[index]}}</span>
 					</template>
 				</div>
                 <div class='music-pubdate'>
-                    发行日期：{{music_pubdate}}
+                    发行日期：{{musicInfo.music_pubdate}}
 				</div>
 				<div class='music-type'>
-					<template v-for='(item, index) in music_type'>
-                        <span v-if='index < (music_type.length - 1)'>
+					<template v-for='(item, index) in musicInfo.music_type'>
+                        <span v-if='index < (musicInfo.music_type.length - 1)'>
                             {{item.name}}/
                         </span>
                         <span v-else>{{item.name}}</span>
                     </template>
 				</div>
-				<div class='music-list' v-if='music_list.length'>
+				<div class='music-list' v-if='musicInfo.music_list.length'>
 					<p style='color: #00b600;'>曲目列表：</p>
                     <ul>
-                        <li v-for='(item,index) in music_list'>{{(index + 1)}}.{{item.replace(/^\d+[.\s+]/g,'')}}</li>
+                        <li v-for='(item,index) in musicInfo.music_list'>{{(index + 1)}}.{{item.replace(/^\d+[.\s+]/g,'')}}</li>
                     </ul>
 				</div>
 			</section>
@@ -42,22 +42,19 @@
 import Loader from '../components/loading.vue'
 import PageHeader from '../components/header.vue'
 import PageFooter from '../components/footer.vue'
+import {mapState} from 'vuex'
+
 export default{
 	data(){
 		return {
-			title: '努力加载中',
-			music_id: '',
-			music_poster: '',
-			music_star: '',
-			music_count: '',
-            music_pubdate: '',
-			music_singer:[],
-			music_casts: [],
-			music_type: [],
-			music_list: '',
-			back_show: true,
-			loader_show: true
+			back_show: true
 		}
+	},
+	computed:{
+		...mapState({
+			'musicInfo': 'musicInfo',
+			'loader_show': 'loader_show'
+		})
 	},
 	components:{
 		'page-header': PageHeader,
@@ -65,23 +62,9 @@ export default{
 		'loader': Loader
 	},
 	created(){
-		let self = this;
-		self.getmusicId();
-		self.$http.jsonp('https://api.douban.com/v2/music/'+ self.music_id).then((response) => {
-        	// console.log(response);
-        	if(response.ok){
-				let res = response.data;
-				self.title = res.title;
-				self.music_poster = res.image;
-				self.music_star = res.rating.average;
-				self.music_count = res.rating.numRaters;
-				self.music_singer = res.attrs.singer;
-                self.music_pubdate = res.attrs.pubdate?res.attrs.pubdate[0]:'未知';
-				self.music_type = res.tags;
-				self.music_list = res.attrs.tracks ?res.attrs.tracks[0].split('\n'):[];
-				self.loader_show = false;
-        	}
-       	})
+		this.$store.dispatch('showLoading');
+		this.getmusicId();
+		this.$store.dispatch('setMusicInfo', {id: this.music_id, context: this})
 	},
 	methods:{
 		getmusicId(){

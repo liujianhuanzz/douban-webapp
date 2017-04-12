@@ -11,14 +11,13 @@ import Loader from '../components/loading.vue'
 import PageHeader from '../components/header.vue'
 import PageFooter from '../components/footer.vue'
 import MovieList from '../components/movie-list.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default{
 	data(){
 		return {
 			'title': '电影',
 			'in_theaters':[],
-			'total': 0,
-			'loader_show': true
+			'total': 0
 		}
 	},
 	components:{
@@ -28,26 +27,17 @@ export default{
 		'loader': Loader
 	},
 	computed:{
+		...mapState({
+			'loader_show': 'loader_show'
+		}),
 		...mapGetters({
 			'userInfo':'getUserInfo',
 			'movie_list':'getMovieList'
-
 		})
 	},
 	created(){
-		let self = this;
-        if(!self.movie_list.length){
-			self.$http.jsonp('http://api.douban.com/v2/movie/in_theaters').then((response) => {
-				console.log(response);
-	        	if(response.ok){
-	        		self.total = response.data.total;
-					self.$store.dispatch('setMovieList', response.data.subjects);
-					self.loader_show = false;
-	        	}
-	       	})
-		}else{
-			self.loader_show = false;
-		}
+		this.$store.dispatch("showLoading");
+		this.$store.dispatch("setMovieList", {context: this});
 	}
 }
 </script>

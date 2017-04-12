@@ -1,33 +1,33 @@
 <template>
 	<div class="detail">
-		<page-header :title='title' :isShow='back_show'></page-header>
+		<page-header :title='movieInfo.title' :isShow='back_show'></page-header>
 		<article class="movie-info">
 			<div class='movie-poster'>
-				<img :src='movie_poster' alt>
+				<img :src='movieInfo.movie_poster' alt>
 			</div>
 			<section class='movie-detail'>
-				<div class='movie-title'>{{title}}</div>
+				<div class='movie-title'>{{movieInfo.title}}</div>
 				<div class='movie-star'>
-					<span style='color: orange'>{{"★★★★★☆☆☆☆☆".slice(5 - parseInt(movie_star/2), 10 - parseInt(movie_star/2))}} {{movie_star}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: orange'>{{movie_count}}</span>人已评价
+					<span style='color: orange'>{{"★★★★★☆☆☆☆☆".slice(5 - parseInt(movieInfo.movie_star/2), 10 - parseInt(movieInfo.movie_star/2))}} {{movieInfo.movie_star}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: orange'>{{movieInfo.movie_count}}</span>人已评价
 				</div>
 				<div class='movie-casts'>
-					<template v-for='item in movie_directors'>
+					<template v-for='item in movieInfo.movie_directors'>
 						<span>{{item.name}}/</span>
 					</template>
-					<template v-for='(list, index) in movie_casts'>
-						<span v-if='index < (movie_casts.length - 1)'>{{list.name}}/</span>
+					<template v-for='(list, index) in movieInfo.movie_casts'>
+						<span v-if='index < (movieInfo.movie_casts.length - 1)'>{{list.name}}/</span>
 						<span v-else>{{list.name}}</span>
 					</template>
 				</div>
 				<div class='movie-type'>
-					<template v-for='(item, index) in movie_type'>
-						<span v-if='index < (movie_type.length - 1)'>{{movie_type[index]}}/</span>
-						<span v-else>{{movie_type[index]}}</span>
+					<template v-for='(item, index) in movieInfo.movie_type'>
+						<span v-if='index < (movieInfo.movie_type.length - 1)'>{{movieInfo.movie_type[index]}}/</span>
+						<span v-else>{{movieInfo.movie_type[index]}}</span>
 					</template>
 
 				</div>
 				<div class='movie-summary'>
-					<p style='color: #00b600;'>故事简介：</p>{{movie_summary}}
+					<p style='color: #00b600;'>故事简介：</p>{{movieInfo.movie_summary}}
 				</div>
 			</section>
 		</article>
@@ -38,20 +38,12 @@
 import Loader from '../components/loading.vue'
 import PageHeader from '../components/header.vue'
 import PageFooter from '../components/footer.vue'
+import {mapState} from 'vuex'
+
 export default{
 	data(){
 		return {
-			title: '努力加载中',
-			movie_id: '',
-			movie_poster: '',
-			movie_star: '',
-			movie_count: '',
-			movie_directors:[],
-			movie_casts: [],
-			movie_type: [],
-			movie_summary: '',
-			back_show: true,
-			loader_show: true
+			back_show: true
 		}
 	},
 	components:{
@@ -59,24 +51,16 @@ export default{
 		'page-footer': PageFooter,
 		'loader': Loader
 	},
+	computed:{
+		...mapState({
+			'loader_show': 'loader_show',
+			'movieInfo': 'movieInfo'
+		})
+	},
 	created(){
-		let self = this;
-		self.getMovieId();
-		self.$http.jsonp('http://api.douban.com/v2/movie/subject/'+ self.movie_id).then((response) => {
-        	// console.log(response);
-        	if(response.ok){
-				let res = response.data;
-				self.title = res.title;
-				self.movie_poster = res.images.large;
-				self.movie_star = res.rating.average;
-				self.movie_count = res.ratings_count;
-				self.movie_directors = res.directors;
-				self.movie_casts = res.casts;
-				self.movie_type = res.genres;
-				self.movie_summary = res.summary;
-				self.loader_show = false;
-        	}
-       	})
+		this.getMovieId();
+		this.$store.dispatch('showLoading')
+		this.$store.dispatch('setMovieInfo', {id: this.movie_id, context: this})
 	},
 	methods:{
 		getMovieId(){
@@ -84,7 +68,6 @@ export default{
 			this.movie_id = url.split('movie/')[1];
 		}
 	}
-
 }
 </script>
 <style lang='less' scoped>

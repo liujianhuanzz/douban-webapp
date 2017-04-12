@@ -6,7 +6,6 @@ require('./assets/css/response.css')
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
-
 import store from './vuex/index'
 import router from './router'
 

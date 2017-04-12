@@ -19,6 +19,7 @@ export default{
 	},
 	methods:{
 		backMenu(){
+			this.$store.dispatch('showLoading')
 			this.$root.$router.back()
 		}
 	}

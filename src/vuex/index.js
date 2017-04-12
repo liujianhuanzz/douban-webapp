@@ -1,15 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import state from './state'
+import * as actions from './action'
+import mutations from './mutations'
+console.log(state)
 Vue.use(Vuex);
 
 const userStore = new Vuex.Store({
-    state: {
-        userInfo: {
-            name:'test'
-        },
-        musicList:[],
-        movieList: []
-    },
+    state,
     getters: {
         getUserInfo(state) {
             return state.userInfo;
@@ -21,28 +19,8 @@ const userStore = new Vuex.Store({
             return state.movieList;
         }
     },
-    mutations: {
-        setUserInfo(state, userInfo) {
-            state.userInfo = userInfo;
-        },
-        setMusicList(state, musicList) {
-            state.musicList = musicList;
-        },
-        setMovieList(state, movieList) {
-            state.movieList = movieList;
-        }
-    },
-    actions: {
-        setUserInfo({ commit }, user) {
-            commit('setUserInfo', user);
-        },
-        setMusicList({ commit }, musicList) {
-            commit('setMusicList', musicList);
-        },
-        setMovieList({ commit }, movieList) {
-            commit('setMovieList', movieList);
-        }
-    }
+    mutations,
+    actions
 });
 
 export default userStore;
